@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Fraunces, Be_Vietnam_Pro } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/providers/LanguageProvider";
+import { LoadingProvider } from "@/providers/LoadingProvider";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -30,7 +31,9 @@ export default function RootLayout({
       className={`${fraunces.variable} ${beVietnamPro.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <LanguageProvider>{children}</LanguageProvider>
+        <LanguageProvider>
+          <LoadingProvider>{children}</LoadingProvider>
+        </LanguageProvider>
       </body>
     </html>
   );
