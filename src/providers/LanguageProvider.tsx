@@ -55,14 +55,11 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     return translatedString;
   };
 
-  // Tránh flash nội dung ngôn ngữ sai khi render lần đầu (hydration mismatch)
-  if (!mounted) {
-    return <div style={{ visibility: 'hidden' }}>{children}</div>;
-  }
-
   return (
     <LanguageContext.Provider value={{ locale, setLocale, t }}>
-      {children}
+      <div style={!mounted ? { visibility: 'hidden' } : undefined}>
+        {children}
+      </div>
     </LanguageContext.Provider>
   );
 }

@@ -13,11 +13,15 @@ export const LanguageSwitcher = () => {
   return (
     <button
       onClick={toggleLanguage}
-      className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-[var(--primary)] text-[var(--primary)] bg-transparent hover:bg-[var(--primary-light)] transition-all duration-300 font-medium text-sm"
+      className="group relative flex items-center justify-center w-12 h-12 rounded-xl text-primary-foreground/80 hover:bg-primary-foreground/15 hover:text-primary-foreground transition-all duration-200"
       aria-label="Toggle language"
     >
       <span className="text-lg leading-none">{locale === 'vi' ? '🇻🇳' : '🇬🇧'}</span>
-      <span>{locale === 'vi' ? 'VN' : 'EN'}</span>
+
+      {/* Tooltip */}
+      <span className="absolute left-full ml-3.5 px-3 py-1.5 rounded-lg bg-foreground text-background text-sm font-medium whitespace-nowrap opacity-0 scale-95 pointer-events-none group-hover:opacity-100 group-hover:scale-100 transition-all duration-200 shadow-lg z-50">
+        {locale === 'vi' ? 'Tiếng Việt (VN)' : 'English (EN)'}
+      </span>
     </button>
   );
 };
