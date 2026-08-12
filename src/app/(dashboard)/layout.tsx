@@ -1,4 +1,5 @@
 import Navbar from "@/components/shared/navbar";
+import Header from "@/components/shared/header";
 import React from "react";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
@@ -27,9 +28,12 @@ export default async function DashboardLayout({
   return (
     <div className="min-h-screen bg-background text-foreground flex">
       <Navbar />
-      <main className="flex-1 pl-24 transition-all duration-300">
-        {children}
-      </main>
+      <div className="flex-1 pl-24 flex flex-col min-h-screen transition-all duration-300">
+        <Header user={user} />
+        <main className="flex-1 p-6 md:p-8">
+          {children}
+        </main>
+      </div>
     </div>
   );
 }

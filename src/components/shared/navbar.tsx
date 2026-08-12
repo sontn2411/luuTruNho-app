@@ -78,7 +78,9 @@ const Navbar = () => {
             >
               <Icon
                 className={`w-6 h-6 transition-all duration-300 ${
-                  isActive ? "scale-105 text-primary" : "group-hover:scale-110"
+                  isActive
+                    ? "scale-105 text-primary"
+                    : "group-hover:scale-110"
                 }`}
               />
 
