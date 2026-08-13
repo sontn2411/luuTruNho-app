@@ -32,13 +32,11 @@ const DEFAULT_METRICS: MetricItem[] = [
     subtext: "6 / 8 phòng",
     badgeText: "12%",
     badgeIcon: ArrowUpRight,
-    badgeColor:
-      "bg-emerald-100/90 text-emerald-800 dark:bg-emerald-950/70 dark:text-emerald-300",
-    borderLeftColor: "border-l-emerald-900 dark:border-l-emerald-600",
+    badgeColor: "bg-emerald-100/90 text-emerald-800",
+    borderLeftColor: "border-l-emerald-800",
     href: "/rooms",
     icon: Home,
-    iconBoxBg:
-      "bg-emerald-100/60 text-emerald-900 dark:bg-emerald-950/60 dark:text-emerald-300",
+    iconBoxBg: "bg-emerald-100/60 text-emerald-900",
   },
   {
     title: "NHẬN PHÒNG HÔM NAY",
@@ -46,13 +44,11 @@ const DEFAULT_METRICS: MetricItem[] = [
     subtext: "2 đã xác nhận",
     badgeText: "2 mới",
     badgeIcon: ArrowUpRight,
-    badgeColor:
-      "bg-emerald-100/90 text-emerald-800 dark:bg-emerald-950/70 dark:text-emerald-300",
-    borderLeftColor: "border-l-[#6b3319] dark:border-l-[#a35229]",
+    badgeColor: "bg-emerald-100/90 text-emerald-800",
+    borderLeftColor: "border-l-[#6b3319]",
     href: "/bookings",
     icon: LogIn,
-    iconBoxBg:
-      "bg-stone-200/60 text-stone-800 dark:bg-stone-800 dark:text-stone-200",
+    iconBoxBg: "bg-stone-200/60 text-stone-800",
   },
   {
     title: "TRẢ PHÒNG HÔM NAY",
@@ -60,13 +56,11 @@ const DEFAULT_METRICS: MetricItem[] = [
     subtext: "11:00 · Phòng Gió",
     badgeText: "1 cần xử lý",
     badgeIcon: ArrowDownLeft,
-    badgeColor:
-      "bg-orange-100/90 text-amber-900 dark:bg-orange-950/70 dark:text-orange-300",
-    borderLeftColor: "border-l-[#7a5c29] dark:border-l-[#b88c42]",
+    badgeColor: "bg-orange-100/90 text-amber-900",
+    borderLeftColor: "border-l-[#7a5c29]",
     href: "/bookings",
     icon: LogOut,
-    iconBoxBg:
-      "bg-stone-200/60 text-stone-800 dark:bg-stone-800 dark:text-stone-200",
+    iconBoxBg: "bg-stone-200/60 text-stone-800",
   },
   {
     title: "DOANH THU THÁNG NÀY",
@@ -74,13 +68,11 @@ const DEFAULT_METRICS: MetricItem[] = [
     subtext: "so với 44,9tr tháng trước",
     badgeText: "8.4%",
     badgeIcon: ArrowUpRight,
-    badgeColor:
-      "bg-emerald-100/90 text-emerald-800 dark:bg-emerald-950/70 dark:text-emerald-300",
-    borderLeftColor: "border-l-[#854320] dark:border-l-[#c46835]",
+    badgeColor: "bg-emerald-100/90 text-emerald-800",
+    borderLeftColor: "border-l-[#854320]",
     href: "/finance",
     icon: Wallet,
-    iconBoxBg:
-      "bg-stone-200/60 text-stone-800 dark:bg-stone-800 dark:text-stone-200",
+    iconBoxBg: "bg-stone-200/60 text-stone-800",
   },
 ];
 

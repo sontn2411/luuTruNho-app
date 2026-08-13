@@ -2,8 +2,6 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-@custom-variant dark (&:is(.dark *));
-
 @theme inline {
   --font-display: var(--font-fraunces), serif;
   --font-sans: var(--font-be-vietnam-pro), sans-serif;
@@ -93,10 +91,14 @@ input[type="checkbox"]:not(:disabled) {
   cursor: pointer;
 }
 
-button:focus-visible,
-input:focus-visible {
+button:focus-visible {
   outline: 2px solid var(--secondary);
   outline-offset: 3px;
+}
+
+input:focus,
+input:focus-visible {
+  outline: none !important;
 }
 
 #root {

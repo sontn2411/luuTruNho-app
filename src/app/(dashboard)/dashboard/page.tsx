@@ -10,9 +10,18 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MetricCards } from "@/components/dashboard/metric-cards";
+import { QuickBookingModal } from "@/components/bookings/QuickBookingModal";
+import { ROOMS } from "@/components/bookings/mock-data";
+import { Booking } from "@/components/bookings/types";
 
 export default function DashboardPage() {
   const [dateFilter, setDateFilter] = useState("Hôm nay");
+  const [isQuickBookingOpen, setIsQuickBookingOpen] = useState(false);
+
+  const handleAddBooking = (newBooking: Booking) => {
+    // Tạm thời log ra, sau này sẽ tích hợp API hoặc global state
+    console.log("Đã tạo booking mới từ Dashboard:", newBooking);
+  };
 
   return (
     <div className="min-h-screen p-8 w-full space-y-6">
@@ -55,18 +64,26 @@ export default function DashboardPage() {
           </DropdownMenu>
 
           {/* Button Đặt phòng */}
-          <Link
-            href="/bookings"
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-secondary text-secondary-foreground text-xs font-semibold shadow-md hover:bg-[#7b482d] hover:-translate-y-0.5 active:scale-95 transition-all duration-200"
+          <button
+            onClick={() => setIsQuickBookingOpen(true)}
+            className="px-3.5 py-1.5 rounded-xl bg-secondary text-primary-foreground text-xs font-bold  transition-all shadow-xs cursor-pointer active:scale-95 flex items-center gap-1.5"
           >
             <Plus className="w-4 h-4" />
-            <span>Tạo đặt phòng</span>
-          </Link>
+            <span>Đặt phòng nhanh</span>
+          </button>
         </div>
       </div>
 
       {/* 2. Section Chỉ Số Thống Kê */}
       <MetricCards />
+
+      {/* 3. Modal Đặt Phòng Nhanh */}
+      <QuickBookingModal
+        isOpen={isQuickBookingOpen}
+        onClose={() => setIsQuickBookingOpen(false)}
+        rooms={ROOMS}
+        onAddBooking={handleAddBooking}
+      />
     </div>
   );
 }
