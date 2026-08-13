@@ -2,6 +2,11 @@ export interface Room {
   id: string;
   name: string;
   capacity: string;
+  floor?: number;
+  type?: string;
+  price?: number;
+  status?: "available" | "occupied" | "dirty" | "maintenance";
+  amenities?: string[];
 }
 
 export interface DayInfo {
