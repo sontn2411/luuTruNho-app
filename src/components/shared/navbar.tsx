@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   CalendarCheck,
@@ -12,9 +12,11 @@ import {
   Wallet,
   BarChart3,
   Settings,
+  LogOut,
 } from "lucide-react";
 import { BroomIcon } from "@/components/ui/icons";
-import { LanguageSwitcher } from "./LanguageSwitcher";
+import { createClient } from "@/lib/supabase/client";
+import { useLoading } from "@/providers/LoadingProvider";
 
 interface NavItem {
   name: string;
@@ -36,6 +38,20 @@ const navItems: NavItem[] = [
 
 const Navbar = () => {
   const pathname = usePathname();
+  const router = useRouter();
+  const { showLoading, hideLoading } = useLoading();
+
+  const handleLogout = async () => {
+    showLoading("Đang đăng xuất khỏi hệ thống...");
+    try {
+      const supabase = createClient();
+      await supabase.auth.signOut();
+      router.push("/login");
+      router.refresh();
+    } catch {
+      hideLoading();
+    }
+  };
 
   const activeIndex = navItems.findIndex(
     (item) => pathname === item.href || pathname.startsWith(`${item.href}/`),
@@ -78,9 +94,7 @@ const Navbar = () => {
             >
               <Icon
                 className={`w-6 h-6 transition-all duration-300 ${
-                  isActive
-                    ? "scale-105 text-primary"
-                    : "group-hover:scale-110"
+                  isActive ? "scale-105 text-primary" : "group-hover:scale-110"
                 }`}
               />
 
@@ -95,9 +109,20 @@ const Navbar = () => {
 
       <div className="w-9 h-[1px] bg-primary-foreground/20 my-1" />
 
-      {/* Language Switcher at bottom */}
+      {/* Prominent Red Logout Button at bottom */}
       <div className="flex items-center justify-center pb-0.5">
-        <LanguageSwitcher />
+        <button
+          onClick={handleLogout}
+          className="group relative flex items-center justify-center w-12 h-12 rounded-xl text-destructive-foreground hover:bg-red-600 hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg shadow-destructive/30 cursor-pointer"
+          aria-label="Đăng xuất"
+        >
+          <LogOut className="w-5 h-5 transition-transform duration-200 group-hover:scale-110" />
+
+          {/* Tooltip text */}
+          <span className="absolute left-full ml-3.5 px-3 py-1.5 rounded-lg bg-destructive text-destructive-foreground text-sm font-medium whitespace-nowrap opacity-0 scale-95 pointer-events-none group-hover:opacity-100 group-hover:scale-100 transition-all duration-200 shadow-lg z-50">
+            Đăng xuất
+          </span>
+        </button>
       </div>
     </nav>
   );

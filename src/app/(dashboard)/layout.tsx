@@ -28,11 +28,9 @@ export default async function DashboardLayout({
   return (
     <div className="min-h-screen bg-background text-foreground flex">
       <Navbar />
-      <div className="flex-1 pl-24 flex flex-col min-h-screen transition-all duration-300">
+      <div className="flex-1 pl-30 flex flex-col min-h-screen transition-all duration-300">
         <Header user={user} />
-        <main className="flex-1 p-6 md:p-8">
-          {children}
-        </main>
+        <main className="flex-1 ">{children}</main>
       </div>
     </div>
   );
