@@ -46,9 +46,11 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const pathname = request.nextUrl.pathname;
+  const isAdminPath = pathname.startsWith('/admin');
 
   // Các trang yêu cầu phải đăng nhập mới truy cập được
   const isProtectedPath =
+    isAdminPath ||
     pathname.startsWith('/dashboard') ||
     pathname.startsWith('/bookings') ||
     pathname.startsWith('/rooms') ||
@@ -69,7 +71,42 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // 2. Đã đăng nhập mà vào /login hoặc /register -> Chuyển hướng về /dashboard
+  // 2. Kiểm tra riêng cho trang /admin (Chỉ cho phép Admin truy cập)
+  if (user && isAdminPath) {
+    const superAdminEmail = (process.env.SUPER_ADMIN_EMAIL || 'sontn2411@gmail.com').toLowerCase();
+    const isSuperAdminEmail = user.email?.toLowerCase() === superAdminEmail;
+    const isMetadataAdmin =
+      user.app_metadata?.is_admin === true ||
+      user.user_metadata?.is_admin === true;
+
+    let isAdmin = isSuperAdminEmail || isMetadataAdmin;
+
+    // Nếu chưa có trong token metadata -> Kiểm tra bảng profiles
+    if (!isAdmin) {
+      try {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('is_admin')
+          .eq('id', user.id)
+          .maybeSingle();
+
+        if (profile?.is_admin === true) {
+          isAdmin = true;
+        }
+      } catch {
+        // Bỏ qua nếu bảng profiles chưa được tạo
+      }
+    }
+
+    // Không phải Admin -> Chuyển hướng về /dashboard
+    if (!isAdmin) {
+      const url = request.nextUrl.clone();
+      url.pathname = '/dashboard';
+      return NextResponse.redirect(url);
+    }
+  }
+
+  // 3. Đã đăng nhập mà vào /login hoặc /register -> Chuyển hướng về /dashboard
   if (user && isAuthPath) {
     const url = request.nextUrl.clone();
     url.pathname = '/dashboard';
@@ -78,3 +115,4 @@ export async function updateSession(request: NextRequest) {
 
   return supabaseResponse;
 }
+

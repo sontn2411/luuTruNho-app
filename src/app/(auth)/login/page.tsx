@@ -18,6 +18,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { loginSchema, type LoginFormData } from "@/lib/validations/auth";
 import { createClient } from "@/lib/supabase/client";
+import { useUserStore } from "@/stores/useUserStore";
 import { useLoading } from "@/providers/LoadingProvider";
 
 const eyebrowClass =
@@ -26,6 +27,7 @@ const eyebrowClass =
 export default function LoginPage() {
   const router = useRouter();
   const { showLoading, hideLoading } = useLoading();
+  const setUser = useUserStore((state) => state.setUser);
   const [showPassword, setShowPassword] = useState(false);
   const [rememberDevice, setRememberDevice] = useState(true);
   const [authError, setAuthError] = useState<string | null>(null);
@@ -50,10 +52,11 @@ export default function LoginPage() {
 
     try {
       const supabase = createClient();
-      const { error } = await supabase.auth.signInWithPassword({
-        email: data.email,
-        password: data.password,
-      });
+      const { error, data: dataResponse } =
+        await supabase.auth.signInWithPassword({
+          email: data.email,
+          password: data.password,
+        });
 
       if (error) {
         setAuthError(
@@ -62,6 +65,11 @@ export default function LoginPage() {
         hideLoading();
         setIsLoading(false);
       } else {
+        // Lưu user vào Zustand Store ngay lập tức
+        if (dataResponse?.user) {
+          setUser(dataResponse.user);
+        }
+
         // Đăng nhập thành công: GIỮ NGUYÊN MÀN HÌNH LOADING đến khi chuyển xong trang
         showLoading("Đăng nhập thành công! Đang vào hệ thống...");
         router.push("/dashboard");

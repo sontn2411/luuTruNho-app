@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { LogOut, User as UserIcon, Settings, ChevronDown } from "lucide-react";
-import { createClient } from "@/lib/supabase/client";
 import { User } from "@supabase/supabase-js";
 import { useLoading } from "@/providers/LoadingProvider";
 import {
@@ -16,22 +15,24 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import { useUserStore } from "@/stores/useUserStore";
+
 interface HeaderUserProfileDropdownProps {
   user: User | null;
 }
 
-export const HeaderUserProfileDropdown: React.FC<HeaderUserProfileDropdownProps> = ({
-  user,
-}) => {
+export const HeaderUserProfileDropdown: React.FC<
+  HeaderUserProfileDropdownProps
+> = ({ user }) => {
   const router = useRouter();
   const { showLoading, hideLoading } = useLoading();
+  const logout = useUserStore((state) => state.logout);
   const [imgError, setImgError] = useState(false);
 
   const handleLogout = async () => {
     showLoading("Đang đăng xuất khỏi hệ thống...");
     try {
-      const supabase = createClient();
-      await supabase.auth.signOut();
+      await logout();
       router.push("/login");
       router.refresh();
     } catch {
@@ -40,9 +41,7 @@ export const HeaderUserProfileDropdown: React.FC<HeaderUserProfileDropdownProps>
   };
 
   const userDisplayName =
-    user?.user_metadata?.full_name ||
-    user?.email?.split("@")[0] ||
-    "Admin";
+    user?.user_metadata?.full_name || user?.email?.split("@")[0] || "Admin";
 
   return (
     <DropdownMenu>

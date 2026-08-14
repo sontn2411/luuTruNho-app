@@ -3,6 +3,8 @@ import { Fraunces, Be_Vietnam_Pro } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/providers/LanguageProvider";
 import { LoadingProvider } from "@/providers/LoadingProvider";
+import { UserProvider } from "@/providers/UserProvider";
+import { AdminBadge } from "@/components/shared/AdminBadge";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -30,11 +32,16 @@ export default function RootLayout({
       lang="vi"
       className={`${fraunces.variable} ${beVietnamPro.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-        <LanguageProvider>
-          <LoadingProvider>{children}</LoadingProvider>
-        </LanguageProvider>
+      <body className="min-h-full flex flex-col relative">
+        <UserProvider>
+          <LanguageProvider>
+            <LoadingProvider>{children}</LoadingProvider>
+          </LanguageProvider>
+          <AdminBadge />
+        </UserProvider>
       </body>
     </html>
   );
 }
+
+
