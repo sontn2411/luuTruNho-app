@@ -5,6 +5,7 @@ import { LanguageProvider } from "@/providers/LanguageProvider";
 import { LoadingProvider } from "@/providers/LoadingProvider";
 import { UserProvider } from "@/providers/UserProvider";
 import { AdminBadge } from "@/components/shared/AdminBadge";
+import { CustomScrollbar } from "@/components/shared/CustomScrollbar";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -38,10 +39,9 @@ export default function RootLayout({
             <LoadingProvider>{children}</LoadingProvider>
           </LanguageProvider>
           <AdminBadge />
+          <CustomScrollbar />
         </UserProvider>
       </body>
     </html>
   );
 }
-
-

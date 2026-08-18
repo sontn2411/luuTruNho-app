@@ -65,6 +65,17 @@
 html {
   min-width: 320px;
   background: var(--background);
+  scroll-behavior: smooth;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+/* Hide default browser scrollbars globally */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
 body {
@@ -76,6 +87,14 @@ body {
   font-family: "Be Vietnam Pro", sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+/* Prevent Radix UI scroll lock from hiding scrollbar and causing header layout shift */
+body[data-scroll-locked],
+html[data-scroll-locked] {
+  overflow: auto !important;
+  padding-right: 0px !important;
+  margin-right: 0px !important;
 }
 
 button,
@@ -91,18 +110,156 @@ input[type="checkbox"]:not(:disabled) {
   cursor: pointer;
 }
 
-button:focus-visible {
+button:focus-visible,
+input:focus-visible {
   outline: 2px solid var(--secondary);
   outline-offset: 3px;
 }
 
-input:focus,
-input:focus-visible {
-  outline: none !important;
-}
-
 #root {
   min-height: 100vh;
+}
+
+/* Homepage material guard: organic corners stay recognizable, but never steal content space. */
+@layer components {
+  main [class*="rounded-[3px_3px_34%_3px]"],
+  main [class*="rounded-[3px_34%_3px_3px]"],
+  main [class*="rounded-[3px_3px_36%_3px]"],
+  main [class*="rounded-[3px_3px_38%_3px]"],
+  main [class*="rounded-[3px_3px_3px_38%]"],
+  main [class*="rounded-[3px_3px_3px_34%]"],
+  main [class*="rounded-[3px_3px_3px_30%]"],
+  main [class*="rounded-[3px_3px_30%_3px]"],
+  main [class*="rounded-[3px_30%_3px_3px]"],
+  main [class*="rounded-[3px_3px_27%_3px]"] {
+    border-radius: 1.25rem;
+    overflow: hidden;
+  }
+
+  main [class*="rounded-[3px_3px_42%_3px]"],
+  main [class*="rounded-[3px_42%_3px_3px]"],
+  main [class*="rounded-[3px_3px_45%_3px]"],
+  main [class*="rounded-[3px_45%_3px_3px]"] {
+    border-radius: 1.5rem;
+    overflow: hidden;
+  }
+
+  main [class*="rounded-[3px_3px_32%_3px]"] {
+    max-height: calc(100dvh - 2rem);
+    overflow-x: hidden;
+    overflow-y: auto;
+    border-radius: 1.25rem;
+  }
+
+  .marketing-home > section {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+      opacity 650ms var(--ease-out),
+      transform 650ms var(--ease-out);
+    will-change: opacity, transform;
+  }
+
+  body[data-scroll-dir="up"] .marketing-home > section:not(.is-visible) {
+    transform: translateY(-28px);
+  }
+
+  .marketing-home > section.is-visible {
+    opacity: 1;
+    transform: translateY(0) !important;
+  }
+
+  .marketing-home > section:nth-of-type(2n).is-visible {
+    transition-delay: 50ms;
+  }
+
+  .marketing-home .group img {
+    will-change: transform;
+  }
+
+  .marketing-home [id] {
+    scroll-margin-top: 5.5rem;
+  }
+
+  .marketing-gallery {
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+  }
+
+  .marketing-gallery > figure {
+    opacity: 0;
+    transform: translateY(24px) scale(0.985);
+    transition:
+      opacity 720ms var(--ease-out),
+      transform 720ms var(--ease-out),
+      box-shadow 420ms var(--ease-out);
+    will-change: transform, opacity;
+  }
+
+  .marketing-home > section.is-visible .marketing-gallery > figure {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  .marketing-home
+    > section.is-visible
+    .marketing-gallery
+    > figure:nth-child(1) {
+    transition-delay: 70ms;
+  }
+
+  .marketing-home
+    > section.is-visible
+    .marketing-gallery
+    > figure:nth-child(2) {
+    transition-delay: 125ms;
+  }
+
+  .marketing-home
+    > section.is-visible
+    .marketing-gallery
+    > figure:nth-child(3) {
+    transition-delay: 180ms;
+  }
+
+  .marketing-home
+    > section.is-visible
+    .marketing-gallery
+    > figure:nth-child(4) {
+    transition-delay: 235ms;
+  }
+
+  .marketing-gallery > figure:hover,
+  .marketing-gallery > figure:focus-within {
+    transform: translateY(-6px) scale(1.01);
+    box-shadow: 0 18px 38px rgba(39, 55, 43, 0.18);
+  }
+
+  .marketing-gallery > figure img {
+    transition:
+      transform 850ms var(--ease-out),
+      filter 450ms var(--ease-out);
+    will-change: transform;
+  }
+
+  .marketing-gallery > figure:hover img,
+  .marketing-gallery > figure:focus-within img {
+    filter: saturate(1.06) contrast(1.02);
+    transform: scale(1.065);
+  }
+
+  .marketing-gallery > figure:hover figcaption,
+  .marketing-gallery > figure:focus-within figcaption {
+    transform: translateY(-2px);
+  }
+
+  .marketing-gallery > figure figcaption {
+    transition: transform 420ms var(--ease-out);
+  }
+
+  .marketing-gallery::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @keyframes rise-in {
@@ -127,38 +284,6 @@ input:focus-visible {
   }
 }
 
-@keyframes nav-active-bounce {
-  0% {
-    transform: scale(0.85);
-  }
-  60% {
-    transform: scale(1.12);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-@keyframes nav-icon-pop {
-  0% {
-    transform: scale(0.75) rotate(-12deg);
-  }
-  50% {
-    transform: scale(1.22) rotate(4deg);
-  }
-  100% {
-    transform: scale(1) rotate(0deg);
-  }
-}
-
-@utility animate-nav-active {
-  animation: nav-active-bounce 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-
-@utility animate-nav-icon {
-  animation: nav-icon-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -167,5 +292,11 @@ input:focus-visible {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .marketing-gallery > figure,
+  .marketing-home > section.is-visible .marketing-gallery > figure {
+    opacity: 1;
+    transform: none;
   }
 }
